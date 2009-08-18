@@ -1,2 +1,3 @@
 class Converter
+true
 end

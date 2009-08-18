@@ -1,7 +1,11 @@
 class Converter
 
-def to_dolar a
-    a.to_f  
-end
+  def initialize(valor, moeda)
+    @valor = valor
+  end
+  
+  def to_dolar
+    1.86 * @valor
+  end
 
 end

@@ -1,33 +1,51 @@
 require 'lib/converter.rb'
 
 describe 'converter' do
-  it "deve existir" do
-     Converter
+  before(:each) do
+    @cotacao = Converter::COTACAO
+  end
+
+  it "deve converter euros em reais" do
+    [1, 10, 25, 32.17, 99.99].each do |valor|
+      dinheiro = Converter.new(valor, "EUR")
+      dinheiro.converter_para('BRL').should == valor * @cotacao["BRL"]
+    end
+  end
+
+  it "deve converter euros em dólares" do
+    [1, 10, 25, 32.17, 99.99].each do |valor|
+      dinheiro = Converter.new(valor, "EUR")
+      dinheiro.converter_para('USD').should == valor * @cotacao["USD"]
+    end
+  end
+
+  it "deve converter reais em euro" do
+    [1, 10, 25, 32.17, 99.99].each do |valor|
+      dinheiro = Converter.new(valor, "BRL")
+      dinheiro.converter_de('EUR').should == @cotacao["EUR"] / valor 
+    end
+  end
+
+  it "deve converter dólares em euro" do
+    [1, 10, 25, 32.17, 99.99].each do |valor|
+      dinheiro = Converter.new(valor, "USD")
+      dinheiro.converter_de('EUR').should ==  @cotacao["EUR"] / valor
+    end
+  end
+
+  it "deve converter qualquer coisa em qualquer coisa" do
+    pending
+  #  [1, 10, 25, 32.17, 99.99].each do |valor|
+  #    dinheiro = Converter.new(valor, "USD")
+  #    dinheiro.converter_para('EUR').should ==  @cotacao["EUR"] / valor
+  #  end
   end
   
-  it "deve transformar 1 real em dolares" do
-    a = Converter.new(1, "BRL")
-    a.to_dolar.should == 1.86
+  it "deve converter Real em Dólares" do
+    valor = 10
+    dinheiro = Converter.new(valor, "BRL")
+    dinheiro.converter_para('USD').should == 5.38
   end
-  
-  it "deve tranformar 10 reais em dolares" do
-    b = Converter.new(10, "BRL")
-    b.to_dolar.should == 18.60
-  end
-  
-  it "deve transformar 1 real em euros" do
-    a = Converter.new(1, "BRL")
-    a.to_euro.should == 3.40
-  end
-  
-  it "deve transformar 10 reais em euros" do
-    a = Converter.new(10, "BRL")
-    a.to_euro.should == 34.00
-  end
-  
-  it "deve transformar 1 dolar em euro" do
-    a = Converter.new(1, "USD")
-    a.to_euro.should == 1.96
-  end
+
 
 end
